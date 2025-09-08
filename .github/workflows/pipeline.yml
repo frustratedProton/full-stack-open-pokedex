@@ -1,42 +1,49 @@
-name: Deployment Pipeline
+name: Deployment pipeline
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - master
 
 jobs:
-  deployment:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the code from the repository
-      - uses: actions/checkout@v4
+    simple_deployment_pipeline:
+        runs-on: ubuntu-20.04
 
-      # Set up Node.js (version 20 as specified)
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+        steps:
+            - name: Checkout code
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+              uses: actions/checkout@v3
 
-      # Check style with ESLint
-      - name: Check style
-        run: npm run eslint
+            - name: Setup Node.js
 
-      # Build the app (make sure `dist` folder is generated)
-      - name: Build the app
-        run: npm run build
+              uses: actions/setup-node@v3
 
-      # Run the app in production mode
-      - name: Start app in production mode
-        run: npm run start-prod &
+              with:
+                  node-version: '16'
 
-      # Run end-to-end tests with Cypress
-      - name: Run e2e tests with Cypress
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm run test:e2e
-          start: npm run start-prod
-          wait-on: http://localhost:5000
+            - name: Install dependencies
+
+              run: npm install
+
+            - name: Check style
+
+              run: npm run eslint
+
+            - name: Build
+
+              run: npm run build
+
+            - name: Test
+
+              run: npm run test
+
+            - name: E2E tests
+
+              uses: cypress-io/github-action@v5
+
+              with:
+                  command: npm run test:e2e
+
+                  start: npm run start-prod
+
+                  wait-on: http://localhost:4000
