@@ -11,39 +11,28 @@ jobs:
 
         steps:
             - name: Checkout code
-
               uses: actions/checkout@v3
 
             - name: Setup Node.js
-
               uses: actions/setup-node@v3
-
               with:
                   node-version: '16'
 
             - name: Install dependencies
-
               run: npm install
 
             - name: Check style
-
               run: npm run eslint
 
             - name: Build
-
               run: npm run build
 
             - name: Test
-
               run: npm run test
 
-            - name: E2E tests
-
+            - name: E2E testings
               uses: cypress-io/github-action@v5
-
               with:
                   command: npm run test:e2e
-
                   start: npm run start-prod
-
                   wait-on: http://localhost:4000
