@@ -11,38 +11,36 @@ jobs:
         steps:
             # Checkout the code from the repository
             - uses: actions/checkout@v4
-
+            
             # Set up Node.js (version 20 as specified)
             - uses: actions/setup-node@v4
               with:
                   node-version: '20'
-
+            
             # Install dependencies
             - name: Install dependencies
               run: npm install
-
+            
             # Check style with ESLint
             - name: Check style
               run: npm run eslint
-
+            
             # Build the app (make sure `dist` folder is generated)
             - name: Build the app
               run: npm run build
 
             # Start app in production mode (make sure it's ready to serve)
             - name: Start app in production mode
-              run: npm run start-prod &
-              # The '&' ensures the server runs in the background
-
-            # Wait for the app to be ready (give it a few seconds to start)
+              run: npm run start-prod
+            
+            # Wait for the app to be ready
             - name: Wait for the server to be ready
               run: npx wait-on http://localhost:5000
-
-            # Run e2e tests with Cypress (Don't start the app here, it's already started)
+            
+            # Run e2e tests with Cypress
             - name: Run e2e tests with Cypress
               uses: cypress-io/github-action@v5
               with:
-                  command: npm run test:e2e
-                  # Do not start the app again, it's already started in the previous step
-                  start: false
-                  wait-on: http://localhost:5000
+                command: npm run test:e2e
+                start: false
+                wait-on: http://localhost:5000
