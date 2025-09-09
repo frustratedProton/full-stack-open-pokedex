@@ -7,7 +7,7 @@ on:
 
 jobs:
     simple_deployment_pipeline:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
@@ -16,7 +16,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
-                  node-version: '16'
+                  node-version: '20'
 
             - name: Install dependencies
               run: npm install
@@ -30,7 +30,7 @@ jobs:
             - name: Test
               run: npm run test
 
-            - name: E2E testings
+            - name: e2e tests
               uses: cypress-io/github-action@v5
               with:
                   command: npm run test:e2e
